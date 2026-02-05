@@ -23,10 +23,7 @@ from typing import Any, Optional
 import attrs
 from sortedcontainers import SortedSet
 
-from ..serialization import (
-    METADATA_KEY_JSON_NAME,
-    METADATA_KEY_XML_ATTR,
-)
+from ..serialization import METADATA_KEY_JSON_NAME, METADATA_KEY_XML_ATTR
 from .bom_ref import BomRef
 
 

@@ -101,7 +101,7 @@ class Xml(BaseSchemaVersion, BaseOutput):
                                 'executionEnvironment', 'implementationPlatform', 'certificationLevel', 'mode',
                                 'padding', 'cryptoFunctions', 'classicalSecurityLevel', 'nistQuantumSecurityLevel'],
         'cryptoProperties': ['assetType', 'algorithmProperties', 'certificateProperties', 'relatedCryptoMaterialProperties',
-                            'protocolProperties', 'oid'],
+                             'protocolProperties', 'oid'],
         'protocolProperties': ['type', 'version', 'cipherSuites', 'ikev2TransformTypes', 'cryptoRefArray'],
         'cipherSuite': ['name', 'algorithms', 'identifiers'],
         'vulnerability': ['id', 'source', 'references', 'ratings', 'cwes', 'description', 'detail',
@@ -160,13 +160,10 @@ class Xml(BaseSchemaVersion, BaseOutput):
 
     def _filter_unsupported_enum_values(self, data: Any) -> None:
         """Recursively filter out enum values not supported in this schema version."""
-        from ..model import HASH_ALG_VERSIONS, HashAlgorithm
-        from ..model import EXTREF_TYPE_VERSIONS, ExternalReferenceType
-        from ..model.issue import ISSUE_CLASSIFICATION_VERSIONS, IssueClassification
-        from ..model.vulnerability import (
-            VULNERABILITY_SCORE_SOURCE_VERSIONS, VulnerabilityScoreSource
-        )
+        from ..model import EXTREF_TYPE_VERSIONS, HASH_ALG_VERSIONS, ExternalReferenceType, HashAlgorithm
         from ..model.component import COMPONENT_SCOPE_VERSIONS, ComponentScope
+        from ..model.issue import ISSUE_CLASSIFICATION_VERSIONS, IssueClassification
+        from ..model.vulnerability import VULNERABILITY_SCORE_SOURCE_VERSIONS, VulnerabilityScoreSource
 
         if isinstance(data, dict):
             # Filter hashes
@@ -231,7 +228,7 @@ class Xml(BaseSchemaVersion, BaseOutput):
         serializer = CycloneDxXmlSerializer(self.schema_version_enum)
 
         # Create root bom element with namespace-qualified tag
-        ns_tag = lambda name: f'{{{xmlns}}}{name}'
+        def ns_tag(name): return f'{{{xmlns}}}{name}'
         root = XmlElement(ns_tag('bom'), {
             'version': str(bom.version),
         })
@@ -336,7 +333,7 @@ class Xml(BaseSchemaVersion, BaseOutput):
 
     def _dependency_to_xml(self, dep: dict, parent: XmlElement, xmlns: str) -> None:
         """Convert a dependency dict to XML with ref as attribute."""
-        ns_tag = lambda n: f'{{{xmlns}}}{n}'
+        def ns_tag(n): return f'{{{xmlns}}}{n}'
         elem = XmlElement(ns_tag('dependency'))
 
         # ref is an attribute
@@ -354,7 +351,7 @@ class Xml(BaseSchemaVersion, BaseOutput):
 
     def _property_to_xml(self, prop: dict, parent: XmlElement, xmlns: str) -> None:
         """Convert a property dict to XML with name as attribute and value as text."""
-        ns_tag = lambda n: f'{{{xmlns}}}{n}'
+        def ns_tag(n): return f'{{{xmlns}}}{n}'
         elem = XmlElement(ns_tag('property'))
 
         if 'name' in prop:
@@ -369,7 +366,7 @@ class Xml(BaseSchemaVersion, BaseOutput):
         if data is None:
             return
 
-        ns_tag = lambda n: f'{{{xmlns}}}{n}'
+        def ns_tag(n): return f'{{{xmlns}}}{n}'
 
         # Get attribute fields for this element type
         attr_fields = self._XML_ATTR_FIELDS.get(name, set())
@@ -827,7 +824,7 @@ class Xml(BaseSchemaVersion, BaseOutput):
 
     def _hash_to_xml(self, hash_data: dict, parent: XmlElement, xmlns: str) -> None:
         """Convert a hash dict to XML with alg as attribute."""
-        ns_tag = lambda n: f'{{{xmlns}}}{n}'
+        def ns_tag(n): return f'{{{xmlns}}}{n}'
         elem = XmlElement(ns_tag('hash'))
 
         if 'alg' in hash_data:
@@ -839,7 +836,7 @@ class Xml(BaseSchemaVersion, BaseOutput):
 
     def _license_to_xml(self, lic_data: dict, parent: XmlElement, xmlns: str) -> None:
         """Convert a license dict to XML."""
-        ns_tag = lambda n: f'{{{xmlns}}}{n}'
+        def ns_tag(n): return f'{{{xmlns}}}{n}'
 
         # Check if it's an expression or a license
         if 'expression' in lic_data or 'value' in lic_data:
@@ -892,7 +889,7 @@ class Xml(BaseSchemaVersion, BaseOutput):
 
     def _data_classification_to_xml(self, dc_data: dict, parent: XmlElement, xmlns: str) -> None:
         """Convert a DataClassification dict to XML with flow as attribute."""
-        ns_tag = lambda n: f'{{{xmlns}}}{n}'
+        def ns_tag(n): return f'{{{xmlns}}}{n}'
         elem = XmlElement(ns_tag('classification'))
 
         if 'flow' in dc_data:
@@ -904,7 +901,7 @@ class Xml(BaseSchemaVersion, BaseOutput):
 
     def _attached_text_to_xml(self, text_data: dict, parent: XmlElement, xmlns: str) -> None:
         """Convert an AttachedText dict to XML with attributes and text content."""
-        ns_tag = lambda n: f'{{{xmlns}}}{n}'
+        def ns_tag(n): return f'{{{xmlns}}}{n}'
         elem = XmlElement(ns_tag('text'))
 
         # Set attributes

@@ -621,6 +621,7 @@ class Bom:
             A new Bom instance
         """
         import json
+
         from ..serialization import make_converter
 
         if isinstance(data, (str, bytes)):
@@ -655,6 +656,7 @@ class Bom:
             A new Bom instance
         """
         from xml.etree.ElementTree import Element, fromstring, parse
+
         from ..serialization import make_converter
 
         if isinstance(data, (str, bytes)):

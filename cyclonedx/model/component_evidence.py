@@ -347,7 +347,7 @@ class CallStack:
     .. note::
         See the CycloneDX Schema definition: https://cyclonedx.org/docs/1.7/json/#components_items_evidence_callstack
     """
-    frames: List[CallStackFrame] = attrs.field(
+    frames: list[CallStackFrame] = attrs.field(
         factory=list,
         metadata={METADATA_KEY_XML_SEQUENCE: 1}
     )

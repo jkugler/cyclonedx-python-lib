@@ -24,11 +24,7 @@ from warnings import warn
 import attrs
 from sortedcontainers import SortedSet
 
-from ..serialization import (
-    METADATA_KEY_VERSIONS,
-    METADATA_KEY_XML_SEQUENCE,
-    VERSIONS_1_4_AND_LATER,
-)
+from ..serialization import METADATA_KEY_VERSIONS, METADATA_KEY_XML_SEQUENCE, VERSIONS_1_4_AND_LATER
 from . import ExternalReference, HashType
 
 if TYPE_CHECKING:  # pragma: no cover

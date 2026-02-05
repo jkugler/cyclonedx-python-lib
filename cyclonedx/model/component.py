@@ -15,6 +15,35 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) OWASP Foundation. All Rights Reserved.
 
+from .._internal.bom_ref import bom_ref_from_str as _bom_ref_from_str
+from ..serialization import ALL_VERSIONS, VERSIONS_1_1_AND_LATER
+from ..schema import SchemaVersion
+from .release_note import ReleaseNotes
+from .license import License, LicenseRepository
+from .issue import IssueType
+from .dependency import Dependable
+from .crypto import CryptoProperties
+from .contact import OrganizationalContact, OrganizationalEntity
+from .component_evidence import ComponentEvidence
+from .bom_ref import BomRef
+from . import AttachedText, ExternalReference, HashAlgorithm, HashType, IdentifiableAction, Property, XsUri
+from ..serialization import (
+    METADATA_KEY_INCLUDE_NONE,
+    METADATA_KEY_JSON_NAME,
+    METADATA_KEY_VERSIONS,
+    METADATA_KEY_XML_ATTR,
+    METADATA_KEY_XML_NAME,
+    METADATA_KEY_XML_SEQUENCE,
+    VERSIONS_1_0_THROUGH_1_3,
+    VERSIONS_1_1_AND_LATER,
+    VERSIONS_1_2_AND_LATER,
+    VERSIONS_1_3_AND_LATER,
+    VERSIONS_1_4_AND_LATER,
+    VERSIONS_1_6_AND_LATER,
+)
+from ..exception.serialization import CycloneDxDeserializationException, SerializationOfUnexpectedValueException
+from ..exception.model import InvalidOmniBorIdException, InvalidSwhidException
+from .._internal.compare import ComparablePackageURL as _ComparablePackageURL
 import re
 import sys
 from collections.abc import Iterable
@@ -41,45 +70,6 @@ def _sortedset_converter(value: Any) -> SortedSet:
     if isinstance(value, Iterable) and not isinstance(value, (str, bytes, dict)):
         return SortedSet(value)
     return SortedSet([value])
-
-from .._internal.bom_ref import bom_ref_from_str as _bom_ref_from_str
-from .._internal.compare import ComparablePackageURL as _ComparablePackageURL
-from ..exception.model import InvalidOmniBorIdException, InvalidSwhidException
-from ..exception.serialization import (
-    CycloneDxDeserializationException,
-    SerializationOfUnexpectedValueException,
-)
-from ..serialization import (
-    METADATA_KEY_INCLUDE_NONE,
-    METADATA_KEY_JSON_NAME,
-    METADATA_KEY_VERSIONS,
-    METADATA_KEY_XML_ATTR,
-    METADATA_KEY_XML_NAME,
-    METADATA_KEY_XML_SEQUENCE,
-    VERSIONS_1_0_THROUGH_1_3,
-    VERSIONS_1_1_AND_LATER,
-    VERSIONS_1_2_AND_LATER,
-    VERSIONS_1_3_AND_LATER,
-    VERSIONS_1_4_AND_LATER,
-    VERSIONS_1_6_AND_LATER,
-)
-from . import (
-    AttachedText,
-    ExternalReference,
-    HashAlgorithm,
-    HashType,
-    IdentifiableAction,
-    Property,
-    XsUri,
-)
-from .bom_ref import BomRef
-from .component_evidence import ComponentEvidence
-from .contact import OrganizationalContact, OrganizationalEntity
-from .crypto import CryptoProperties
-from .dependency import Dependable
-from .issue import IssueType
-from .license import License, LicenseRepository
-from .release_note import ReleaseNotes
 
 
 def _bom_ref_converter(value: Optional[Union[str, BomRef]]) -> BomRef:
@@ -165,9 +155,6 @@ class ComponentScope(str, Enum):
 
 
 # Component scope support by schema version
-from ..serialization import ALL_VERSIONS, VERSIONS_1_1_AND_LATER
-from ..schema import SchemaVersion
-
 COMPONENT_SCOPE_VERSIONS: dict[ComponentScope, set[SchemaVersion]] = {
     ComponentScope.REQUIRED: ALL_VERSIONS,
     ComponentScope.OPTIONAL: ALL_VERSIONS,
@@ -350,7 +337,8 @@ class Swid:
     tag_id: str = attrs.field(metadata={METADATA_KEY_JSON_NAME: 'tagId', METADATA_KEY_XML_ATTR: True})
     name: str = attrs.field(metadata={METADATA_KEY_XML_ATTR: True})
     version: Optional[str] = attrs.field(default=None, metadata={METADATA_KEY_XML_ATTR: True})
-    tag_version: Optional[int] = attrs.field(default=None, metadata={METADATA_KEY_JSON_NAME: 'tagVersion', METADATA_KEY_XML_ATTR: True})
+    tag_version: Optional[int] = attrs.field(
+        default=None, metadata={METADATA_KEY_JSON_NAME: 'tagVersion', METADATA_KEY_XML_ATTR: True})
     patch: Optional[bool] = attrs.field(default=None, metadata={METADATA_KEY_XML_ATTR: True})
     text: Optional[AttachedText] = attrs.field(default=None)
     url: Optional[XsUri] = attrs.field(default=None)

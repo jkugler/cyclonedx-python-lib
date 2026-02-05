@@ -22,6 +22,25 @@ You can either create a `cyclonedx.model.bom.Bom` yourself programmatically, or 
 from a `cyclonedx.parser.BaseParser` implementation.
 """
 
+from ..exception.model import InvalidLocaleTypeException, InvalidUriException
+from ..serialization import VERSIONS_1_1_AND_LATER
+from .bom_ref import BomRef
+from ..serialization import (
+    ALL_VERSIONS,
+    METADATA_KEY_JSON_NAME,
+    METADATA_KEY_VERSIONS,
+    METADATA_KEY_XML_ATTR,
+    METADATA_KEY_XML_NAME,
+    METADATA_KEY_XML_SEQUENCE,
+    VERSIONS_1_2_AND_LATER,
+    VERSIONS_1_3_AND_LATER,
+    VERSIONS_1_4_AND_LATER,
+    VERSIONS_1_5_AND_LATER,
+    VERSIONS_1_6_AND_LATER,
+    VERSIONS_1_7_AND_LATER,
+)
+from ..schema import SchemaVersion
+from ..exception.serialization import CycloneDxDeserializationException, SerializationOfUnexpectedValueException
 import re
 import sys
 from collections.abc import Iterable
@@ -53,24 +72,7 @@ def _sortedset_converter(value: Any) -> SortedSet:
     if isinstance(value, Iterable) and not isinstance(value, (str, bytes, dict)):
         return SortedSet(value)
     return SortedSet([value])
-from ..exception.model import InvalidLocaleTypeException, InvalidUriException
-from ..exception.serialization import CycloneDxDeserializationException, SerializationOfUnexpectedValueException
-from ..schema import SchemaVersion
-from ..serialization import (
-    ALL_VERSIONS,
-    METADATA_KEY_JSON_NAME,
-    METADATA_KEY_VERSIONS,
-    METADATA_KEY_XML_ATTR,
-    METADATA_KEY_XML_NAME,
-    METADATA_KEY_XML_SEQUENCE,
-    VERSIONS_1_2_AND_LATER,
-    VERSIONS_1_3_AND_LATER,
-    VERSIONS_1_4_AND_LATER,
-    VERSIONS_1_5_AND_LATER,
-    VERSIONS_1_6_AND_LATER,
-    VERSIONS_1_7_AND_LATER,
-)
-from .bom_ref import BomRef
+
 
 _BOM_LINK_PREFIX = 'urn:cdx:'
 
@@ -322,7 +324,6 @@ class ExternalReferenceType(str, Enum):
 
 
 # External reference type support by schema version
-from ..serialization import VERSIONS_1_1_AND_LATER
 
 EXTREF_TYPE_VERSIONS: dict[ExternalReferenceType, set[SchemaVersion]] = {
     ExternalReferenceType.VCS: VERSIONS_1_1_AND_LATER,

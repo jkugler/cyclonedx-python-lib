@@ -15,6 +15,8 @@
 # SPDX-License-Identifier: Apache-2.0
 # Copyright (c) OWASP Foundation. All Rights Reserved.
 
+from ..serialization import ALL_VERSIONS
+from ..schema import SchemaVersion
 from collections.abc import Iterable
 from enum import Enum
 from typing import Any, Optional
@@ -22,10 +24,7 @@ from typing import Any, Optional
 import attrs
 from sortedcontainers import SortedSet
 
-from ..serialization import (
-    METADATA_KEY_XML_ATTR,
-    METADATA_KEY_XML_SEQUENCE,
-)
+from ..serialization import METADATA_KEY_XML_ATTR, METADATA_KEY_XML_SEQUENCE
 from . import XsUri
 
 
@@ -42,9 +41,6 @@ class IssueClassification(str, Enum):
 
 
 # Issue classification support by schema version
-from ..serialization import ALL_VERSIONS
-from ..schema import SchemaVersion
-
 ISSUE_CLASSIFICATION_VERSIONS: dict[IssueClassification, set[SchemaVersion]] = {
     IssueClassification.DEFECT: ALL_VERSIONS,
     IssueClassification.ENHANCEMENT: ALL_VERSIONS,

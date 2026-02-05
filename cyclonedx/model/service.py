@@ -24,6 +24,22 @@ This set of classes represents the data that is possible about known Services.
 """
 
 
+from .._internal.bom_ref import bom_ref_from_str as _bom_ref_from_str
+from .release_note import ReleaseNotes
+from .license import License, LicenseRepository
+from .dependency import Dependable
+from .contact import OrganizationalEntity
+from .bom_ref import BomRef
+from . import DataClassification, ExternalReference, Property, XsUri
+from ..serialization import (
+    METADATA_KEY_JSON_NAME,
+    METADATA_KEY_VERSIONS,
+    METADATA_KEY_XML_ATTR,
+    METADATA_KEY_XML_NAME,
+    METADATA_KEY_XML_SEQUENCE,
+    VERSIONS_1_3_AND_LATER,
+    VERSIONS_1_4_AND_LATER,
+)
 from collections.abc import Iterable
 from typing import Any, Optional, Union
 
@@ -40,23 +56,6 @@ def _sortedset_converter(value: Any) -> SortedSet:
     if isinstance(value, Iterable) and not isinstance(value, (str, bytes, dict)):
         return SortedSet(value)
     return SortedSet([value])
-
-from .._internal.bom_ref import bom_ref_from_str as _bom_ref_from_str
-from ..serialization import (
-    METADATA_KEY_JSON_NAME,
-    METADATA_KEY_VERSIONS,
-    METADATA_KEY_XML_ATTR,
-    METADATA_KEY_XML_NAME,
-    METADATA_KEY_XML_SEQUENCE,
-    VERSIONS_1_3_AND_LATER,
-    VERSIONS_1_4_AND_LATER,
-)
-from . import DataClassification, ExternalReference, Property, XsUri
-from .bom_ref import BomRef
-from .contact import OrganizationalEntity
-from .dependency import Dependable
-from .license import License, LicenseRepository
-from .release_note import ReleaseNotes
 
 
 def _bom_ref_converter(value: Optional[Union[str, BomRef]]) -> BomRef:

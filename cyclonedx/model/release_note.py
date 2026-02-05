@@ -22,9 +22,9 @@ from typing import Any, Optional
 import attrs
 from sortedcontainers import SortedSet
 
-from ..serialization import METADATA_KEY_XML_SEQUENCE
 from ..model import Note, Property, XsUri
 from ..model.issue import IssueType
+from ..serialization import METADATA_KEY_XML_SEQUENCE
 
 
 def _sortedset_factory() -> SortedSet:

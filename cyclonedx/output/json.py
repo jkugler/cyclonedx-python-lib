@@ -184,13 +184,10 @@ class Json(BaseOutput, BaseSchemaVersion):
 
     def _filter_unsupported_enum_values(self, data: Any) -> None:
         """Recursively filter out enum values not supported in this schema version."""
-        from ..model import HASH_ALG_VERSIONS, HashAlgorithm
-        from ..model import EXTREF_TYPE_VERSIONS, ExternalReferenceType
-        from ..model.issue import ISSUE_CLASSIFICATION_VERSIONS, IssueClassification
-        from ..model.vulnerability import (
-            VULNERABILITY_SCORE_SOURCE_VERSIONS, VulnerabilityScoreSource
-        )
+        from ..model import EXTREF_TYPE_VERSIONS, HASH_ALG_VERSIONS, ExternalReferenceType, HashAlgorithm
         from ..model.component import COMPONENT_SCOPE_VERSIONS, ComponentScope
+        from ..model.issue import ISSUE_CLASSIFICATION_VERSIONS, IssueClassification
+        from ..model.vulnerability import VULNERABILITY_SCORE_SOURCE_VERSIONS, VulnerabilityScoreSource
 
         if isinstance(data, dict):
             # Filter hashes
